@@ -122,6 +122,7 @@ WNC14A2AInterface::WNC14A2AInterface(WNCDebug *dbg) :
         _sockets[i].socket = i;
         _sockets[i].addr = NULL;
         _sockets[i].opened=false;
+
         _sockets[i].connected=false;
         _sockets[i].proto=1;
         _socRxS[i].m_rx_socket=i;
@@ -476,16 +477,6 @@ void WNC14A2AInterface::_dbOut(const char *format, ...)
         _debugUart->putc('\n');
         va_end (args);
         }
-
-//    if( _debugUart != NULL && (m_debug & 0x0c) ) {
-//        va_list args;
-//        va_start (args, format);
-//        _debugUart->puts(buffer);
-//        vsnprintf(buffer, sizeof(buffer), format, args);
-//        _debugUart->puts(buffer);
-//        _debugUart->putc('\n');
-//        va_end (args);
-//        }
     #endif
 }
 
