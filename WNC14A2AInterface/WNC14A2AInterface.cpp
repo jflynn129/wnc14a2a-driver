@@ -828,7 +828,6 @@ int WNC14A2AInterface::socket_recv(void *handle, void *data, unsigned size)
 }
 
 
-
 int WNC14A2AInterface::rx_event(RXEVENT *ptr)
 {
     debugOutput("ENTER rx_event() for socket %d", ptr->m_rx_socket);
@@ -885,5 +884,3 @@ void WNC14A2AInterface::wnc_eq_event()
     if( !done )  
         wnc_queue.call_in((goSlow?EQ_FREQ_SLOW:EQ_FREQ),mbed::Callback<void()>((WNC14A2AInterface*)this,&WNC14A2AInterface::wnc_eq_event));
 }
-
-
