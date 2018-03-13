@@ -84,81 +84,9 @@ typedef struct tx_event_t {
     void     *m_tx_cb_data;
     } TXEVENT;
 
-#define WNC_DEBUG   0           //1=enable the WNC startup debug output
-                                //0=disable the WNC startup debug output
-#define STOP_ON_FE  1           //1=hang forever if a fatal error occurs
-                                //0=simply return failed response for all socket calls
-#define DISPLAY_FE  1           //1 to display the fatal error when it occurs
-                                //0 to NOT display the fatal error
-#define RESETON_FE  0           //1 to cause the MCU to reset on fatal error
-                                //0 to NOT reset the MCU
-
 #define APN_DEFAULT             "m2m.com.attz"
                         
-/** Error Handling macros & data
-*   @brief  The macros CHK_WNCFE is used to check if a fatal error has occured. If it has
-*           then execute the action specified: fail, void, null, resume
-*
-*    CHK_WNCFE( condition-to-check, fail|void|null|resume )
-*
-*     'fail'   if you want FATAL_WNC_ERROR to be called.  
-*     'void'   if you want to execute a void return
-*     'null'   if you want to execute a null return
-*     'resume' if you simply want to resume program execution
-*
-*  There are several settings that control how FATAL_WNC_ERROR behaves:
-*      1) RESETON_FE determines if the system will reset or hang.
-*      2) DISPLAY_FE determine if an error message is generated or not
-*
-*  The DISPLAY_FE setting determines if a failure message is displayed. 
-*  If set to 1, user sees this messageo:
-*
-*      WNC FAILED @ source-file-name:source-file-line-number
-*
-*  if not set, nothing is displayed.
-*/
-
-#define FATAL_FLAG  WncController::WNC_NO_RESPONSE
-#define WNC_GOOD    WncController::WNC_ON
-
-#define RETfail return -1
-#define RETvoid return
-#define RETnull return NULL
-#define RETresume   
-
-#define DORET(x) RET##x
-
-#define TOSTR(x) #x
-#define INTSTR(x) TOSTR(x)
-#define FATAL_STR (char*)(__FILE__ ":" INTSTR(__LINE__))
-
-#if RESETON_FE == 1   //reset on fatal error
-#define MCURESET     ((*((volatile unsigned long *)0xE000ED0CU))=(unsigned long)((0x5fa<<16) | 0x04L))
-#define RSTMSG       "RESET MCU! "
-#else
-#define MCURESET
-#define RSTMSG       ""
-#endif
-
-#if DISPLAY_FE == 1  //display fatal error message
-#define PFE     {if(_debugUart)_debugUart->printf((char*)RSTMSG "\r\n>>WNC FAILED @ %s\r\n", FATAL_STR);}
-#else
-#define PFE
-#endif
-
-#if STOP_ON_FE == 1  //halt cpu on fatal error
-#define FATAL_WNC_ERROR(v)  {_fatal_err_loc=FATAL_STR;PFE;MCURESET;while(1);}
-#else
-#define FATAL_WNC_ERROR(v)  {_fatal_err_loc=FATAL_STR;PFE;DORET(v);}
-#endif
-
-#define CHK_WNCFE(x,y)    if( x ){FATAL_WNC_ERROR(y);}
-
 #define FIRMWARE_REV(x) (((WNC14A2AInterface*)x)->getWNCRev())
-#define DBGMSG_DRV	0x04
-#define DBGMSG_EQ	0x08
-#define DBGMSG_SMS	0x10
-#define DBGMSG_ARRY     0x20
 
 #define MAX_SMS_MSGS    3
 
