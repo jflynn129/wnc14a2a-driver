@@ -487,7 +487,6 @@ bool WNC14A2AInterface::registered()
 
     if( !m_pwnc ) {
         return (m_errors=NSAPI_ERROR_DEVICE_ERROR);
-        return false;
         }
     CHK_WNCFE((m_pwnc->getWncStatus()==FATAL_FLAG), fail);
 
