@@ -172,9 +172,6 @@ WncGpioPinListK64F wncPinList = {
     &mdm_uart1_cts
 };
 
-UARTSerial   mdmUart(D12,D11,115200);              //UART for WNC Module
-WncIO        wnc_io(&mdmUart);
-
 /*   Constructor
 *
 *  @brief    May be invoked with or without the debug pointer.
@@ -211,6 +208,12 @@ WNC14A2AInterface::~WNC14A2AInterface()
 {
     if( m_pwnc )
         delete m_pwnc;  //free the existing WncControllerK64F object
+
+    if( mdmUart )
+        delete mdmUart;
+
+    if( wnc_io )
+        delete wnc_io;
 }
 
 // - - - - - - - 
@@ -358,7 +361,9 @@ nsapi_error_t WNC14A2AInterface::connect(const char *apn, const char *username, 
     debugOutput("ENTER connect(apn,user,pass)");
 
     if( m_pwnc == NULL ) {
-        m_pwnc = new WncControllerK64F(&wncPinList, &wnc_io, _debugUart);
+        mdmUart = new  UARTSerial(D12,D11,115200);
+        wnc_io = new WncIO(mdmUart);
+        m_pwnc = new WncControllerK64F(&wncPinList, wnc_io, _debugUart);
         if( !m_pwnc ) {
             debugOutput("FAILED to open WncControllerK64!");
             m_errors = NSAPI_ERROR_DEVICE_ERROR;
