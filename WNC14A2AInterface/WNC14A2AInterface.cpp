@@ -149,28 +149,7 @@ static Thread    _smsThread, _eqThread;            //Event Queue thread for SMS 
 static Mutex     _pwnc_mutex;                      
 static int       _active_socket = 0;
 
-//
-// GPIO Pins used to initialize the WNC parts on the Avnet WNC Shield
-//
-
-DigitalOut  mdm_uart2_rx_boot_mode_sel(D1);     // on powerup, 0 = boot mode, 1 = normal boot
-DigitalOut  mdm_power_on(D2);                   // 0 = modem on, 1 = modem off (hold high for >5 seconds to cycle modem)
-DigitalOut  mdm_wakeup_in(D6);                  // 0 = let modem sleep, 1 = keep modem awake -- Note: pulled high on shield
-DigitalOut  mdm_reset(D8);                      // active high
-DigitalOut  shield_3v3_1v8_sig_trans_ena(D9);   // 0 = disabled (all signals high impedence, 1 = translation active
-DigitalOut  mdm_uart1_cts(D10);                 // WNC doesn't utilize RTS/CTS but the pin is connected
-
 using namespace WncControllerK64F_fk;            // namespace for the AT controller class use
-
-//! associations for the controller class to use. Order of pins is critical.
-WncGpioPinListK64F wncPinList = { 
-    &mdm_uart2_rx_boot_mode_sel,
-    &mdm_power_on,
-    &mdm_wakeup_in,
-    &mdm_reset,
-    &shield_3v3_1v8_sig_trans_ena,
-    &mdm_uart1_cts
-};
 
 /*   Constructor
 *
@@ -358,6 +337,28 @@ nsapi_error_t WNC14A2AInterface::connect()   //can be called with no arguments o
 
 nsapi_error_t WNC14A2AInterface::connect(const char *apn, const char *username, const char *password) 
 {
+    //
+    // GPIO Pins used to initialize the WNC parts on the Avnet WNC Shield
+    //
+
+    static DigitalOut  mdm_uart2_rx_boot_mode_sel(D1);     // on powerup, 0 = boot mode, 1 = normal boot
+    static DigitalOut  mdm_power_on(D2);                   // 0 = modem on, 1 = modem off (hold high for >5 seconds to cycle modem)
+    static DigitalOut  mdm_wakeup_in(D6);                  // 0 = let modem sleep, 1 = keep modem awake -- Note: pulled high on shield
+    static DigitalOut  mdm_reset(D8);                      // active high
+    static DigitalOut  shield_3v3_1v8_sig_trans_ena(D9);   // 0 = disabled (all signals high impedence, 1 = translation active
+    static DigitalOut  mdm_uart1_cts(D10);                 // WNC doesn't utilize RTS/CTS but the pin is connected
+
+
+    //! associations for the controller class to use. Order of pins is critical.
+    static WncGpioPinListK64F wncPinList = { 
+        &mdm_uart2_rx_boot_mode_sel,
+        &mdm_power_on,
+        &mdm_wakeup_in,
+        &mdm_reset,
+        &shield_3v3_1v8_sig_trans_ena,
+        &mdm_uart1_cts
+    };
+
     debugOutput("ENTER connect(apn,user,pass)");
 
     if( m_pwnc == NULL ) {

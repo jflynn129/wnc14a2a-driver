@@ -167,7 +167,7 @@ using namespace WncController_fk;
 /** WNC14A2AInterface class
  *  Implementation of the NetworkInterface for WNC14A2A 
  */
-class WNC14A2AInterface : public NetworkStack, public CellularInterface
+class WNC14A2AInterface : public NetworkStack, public NetworkInterface
 {
 public:
 
