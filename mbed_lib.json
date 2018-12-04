@@ -1,13 +1,72 @@
 {
-    "name": "wnc14a2a-library",
+    "name": "wnc14a2a",
     "config": {
-        "wnc-debug": {
-            "help" : "enable or disable WNC debug messages.",
-            "value": "false"
+        "cts": {
+            "help": "Module CTS Line",
+            "value": "D10"
         },
-        "wnc-debug_setting": {
-            "help" : "bit value 1 and/or 2 enable WncController debug output, bit value 4 enables mbed driver debug output.",
-            "value": "4"
+        "debug": {
+            "help": "Enable WNC driver debug messages.",
+            "value": false
+        },
+        "debug_setting": {
+            "help": "Bit value 1 and/or 2 enable WncController debug output, bit value 4 enables mbed driver debug output.",
+            "value": "0x0c"
+        },
+        "lvltranslator": {
+            "help": "Module Level Translator enable Line",
+            "value": "D9"
+        },
+        "power_on": {
+            "help": "Module Power ON Line",
+            "value": "D2"
+        },
+        "provide-default": {
+            "help": "Provide default network interface. [true/false]",
+            "value": false
+        },
+        "reset": {
+            "help": "Module Reset Line",
+            "value": "D8"
+        },
+        "rx_boot_sel": {
+            "help": "Module RX Boot Select Line",
+            "value": "D1"
+        },
+        "rxd": {
+            "help": "Module RX Serial Line",
+            "value": "D11"
+        },
+        "txd": {
+            "help": "Module TX Serial Line",
+            "value": "D12"
+        },
+        "wakeup": {
+            "help": "Module Wakeup Line",
+            "value": "D6"
+        }
+    },
+    "target_overrides": {
+        "K64F": {
+            "cts": "NC",
+            "lvltranslator": "NC",
+            "power_on": "NC",
+            "reset": "NC",
+            "rx_boot_sel": "NC",
+            "rxd": "D1",
+            "txd": "D0",
+            "wakeup": "NC"
+        },
+        "NRF52840_DK": {
+            "cts": "NC",
+            "lvltranslator": "NC",
+            "power_on": "NC",
+            "reset": "NC",
+            "rx_boot_sel": "NC",
+            "rxd": "D1",
+            "txd": "D0",
+            "wakeup": "NC"
         }
     }
 }
+
